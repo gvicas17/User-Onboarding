@@ -22,7 +22,6 @@ function Form(props){
         const {name, value, type, checked} =evt.target
         const valueToUse = type === 'checkbox' ? checked : value
         change (name, valueToUse)
-        console.log(value)
       }
     
 

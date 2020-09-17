@@ -4,6 +4,7 @@ import Form from './Components/Form'
 import axios from 'axios'
 import schema from './validation/formSchema'
 import * as yup from 'yup'
+import NewUser from './Components/NewUser'
 
 // - [ ] Name
 // - [ ] Email
@@ -24,32 +25,42 @@ const initialFormValues = {
   password: '',
 }
 
-// const initialUsers = []
+const initialUsers = []
 const initialDisabled = true
 
 function App() {
 
-  // const [user, setUser] =useState([])
   const [form, setForm] =useState(initialFormValues)
   const [disabled, setDisabled]= useState(initialDisabled)
   const [formErrors, setFormErrors] = useState(initialFormErrors)
-  const update = (formName, formValue) => {
-    setForm({...form, [formName]: formValue})
-  }
+  const [user, setUser] = useState(initialUsers)
+  
 
   // const getUsers = () => {
   //   axios.get('https://reqres.in/api/users')
   //   .then(res => {
   //     setUser(res.data)
+  //     console.log(res.data)
   //   })
   //   .catch(err =>{
   //     console.log(err)
   //   })
+  //   console.log(user)
   // }
 
-  // const postNewUser = newUser => {
-  //   axios.post 
-  // }
+  const postNewUser = newUser => {
+    axios.post('https://reqres.in/api/users', newUser)
+    .then(res =>{
+      setUser([...user, res.data])
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    .finally(()=>{
+
+    })
+  }
 
   const validate = (name, value) => {
     yup
@@ -82,11 +93,14 @@ function App() {
       name: form.name.trim(),
       email: form.email.trim(),
       password: form.password.trim(),
-  
-    // setUser([...user, newUser])
   }
   setForm(initialFormValues)
+  postNewUser(newUser)
 }
+
+// useEffect(() =>{
+//   getUsers()
+// }, [])
 
   useEffect(()=>{
     schema.isValid(form)
@@ -104,7 +118,16 @@ function App() {
       disabled = {disabled}
       errors = {formErrors}
       />
+
+    {
+      user.map(users =>{
+        return(
+          <NewUser key = {users.id} details={users}/>
+        )
+      })
+    }
     </div>
+    
   );
 }
 
