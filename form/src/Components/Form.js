@@ -11,7 +11,7 @@ import React from 'react'
 
 function Form(props){
 
-    const{values, update, submit} = props
+    const{values, submit, change, disabled, errors} = props
 
     const onSubmit = evt => {
         evt.preventDefault()
@@ -19,8 +19,9 @@ function Form(props){
     }
 
     const onChange = evt => {
-        const {name, value} =evt.target
-        update (name, value)
+        const {name, value, type, checked} =evt.target
+        const valueToUse = type === 'checkbox' ? checked : value
+        change (name, valueToUse)
         console.log(value)
       }
     
@@ -55,8 +56,18 @@ function Form(props){
                 <input 
                 name = 'termsAgreement' 
                 type = 'checkbox'
+                checked = {values.termsAgreement}
+                onChange = {onChange}
                 />
-                <button>Submit</button>
+                <div className = 'submitForm'>
+                    <button disabled={disabled}>Submit</button>
+
+                    <div className = 'errors'>
+                        <div>{errors.name}</div>
+                        <div>{errors.email}</div>
+                        <div>{errors.password}</div>
+                   </div>
+                </div>
             </form>
         </div>
 
