@@ -9,6 +9,7 @@ describe('New user app', () => {
     const passwordInput = () => cy.get ('input[name="password"]')
     const checkBox = () => cy.get ('input[name = "termsAgreement"]')
     const form = () => cy.get ("form")
+    const submitButton = () => cy.get ("button")
 
    it('checking to see if it works', ()=> {
        expect(1+2).to.equal(3)
@@ -51,6 +52,13 @@ describe('New user app', () => {
     passwordInput().should('have.value', "password")
     form().submit()
 
+   })
+
+   it ('checking to see validations', () =>{
+    nameInput().should('have.value', "")
+    emailInput().should('have.value', "")
+    passwordInput().should('have.value', "")
+    submitButton().should('be.disabled')
     
    })
 
